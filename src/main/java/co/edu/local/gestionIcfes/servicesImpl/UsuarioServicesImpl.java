@@ -159,12 +159,17 @@ public class UsuarioServicesImpl implements UsuarioServices {
 
 	@Override
 	public boolean validarUsername(String username) {
-		Usuario usuario = usuarioRepository.findByUsername(username);
+		return usuarioRepository.findByUsername(username) == null;
+	}
 
-		if (usuario == null)
-			return true;
+	@Override
+	public boolean existeDocumentoEstudiante(String documentoIdentidad) {
+		return estudianteRepository.existsById(documentoIdentidad);
+	}
 
-		return false;
+	@Override
+	public boolean existeDocumentoDocente(String documentoIdentidad) {
+		return docenteRepository.existsById(documentoIdentidad);
 	}
 
 	@Override

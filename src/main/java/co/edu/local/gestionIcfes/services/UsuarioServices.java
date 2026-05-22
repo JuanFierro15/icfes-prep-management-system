@@ -67,6 +67,12 @@ public interface UsuarioServices extends UserDetailsService{
 	 */
 	public boolean validarUsername(String username);
 
+	/** @return {@code true} si ya existe un estudiante con ese documento. */
+	public boolean existeDocumentoEstudiante(String documentoIdentidad);
+
+	/** @return {@code true} si ya existe un docente con ese documento. */
+	public boolean existeDocumentoDocente(String documentoIdentidad);
+
 	/**
 	 * Obtiene el mayor ID entre una lista de usuarios. Se usa para generar usernames únicos.
 	 *

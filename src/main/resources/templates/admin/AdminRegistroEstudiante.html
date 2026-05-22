@@ -38,6 +38,12 @@
           <span th:text="#{register.student.error}">Error al registrar estudiante</span>
         </div>
       </div>
+      <div th:if="${param.errorDocumento}">
+        <div class="alert alert-warning">
+          <i class="bi bi-exclamation-triangle-fill"></i>
+          <span th:text="#{register.error.documento.duplicado}">El número de documento ya se encuentra registrado</span>
+        </div>
+      </div>
 
       <form id="formRegistroAdmin" th:action="@{/registro}" method="POST" th:object="${persona}">
         <input type="hidden" id="rol" name="rol" value="3" />
