@@ -3,6 +3,7 @@ package co.edu.local.gestionIcfes.servicesImpl;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,14 @@ import co.edu.local.gestionIcfes.services.MaterialEstudioServices;
 @Transactional
 public class MaterialEstudioServicesImpl implements MaterialEstudioServices {
 
+    private static final Set<String> TIPOS_PERMITIDOS = Set.of(
+            "application/pdf",
+            "application/msword",
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            "image/jpeg",
+            "image/png"
+    );
+
     @Autowired
     private MaterialEstudioRepositorio materialRepositorio;
 
@@ -36,17 +45,29 @@ public class MaterialEstudioServicesImpl implements MaterialEstudioServices {
     @Override
     public MaterialEstudio subirMaterial(MultipartFile archivo, String titulo, String descripcion,
                                           Integer semana, Long institucionId) {
+        String contentType = archivo.getContentType();
+        if (contentType == null || !TIPOS_PERMITIDOS.contains(contentType)) {
+            throw new RuntimeException("Tipo de archivo no permitido. Se aceptan: PDF, Word, JPG, PNG");
+        }
+
         Institucion institucion = institucionService.buscarPorId(institucionId);
 
         try {
+            byte[] bytes = archivo.getBytes();
+            if ("application/pdf".equals(contentType)
+                    && (bytes.length < 4
+                        || bytes[0] != '%' || bytes[1] != 'P' || bytes[2] != 'D' || bytes[3] != 'F')) {
+                throw new RuntimeException("El archivo no es un PDF válido");
+            }
+
             MaterialEstudio material = new MaterialEstudio();
             material.setTitulo(titulo);
             material.setDescripcion(descripcion);
             material.setSemana(semana);
             material.setFechaSubida(LocalDate.now());
             material.setNombreArchivo(archivo.getOriginalFilename());
-            material.setTipoArchivo(archivo.getContentType());
-            material.setArchivo(archivo.getBytes());
+            material.setTipoArchivo(contentType);
+            material.setArchivo(bytes);
             material.setInstitucion(institucion);
             return materialRepositorio.save(material);
         } catch (IOException e) {

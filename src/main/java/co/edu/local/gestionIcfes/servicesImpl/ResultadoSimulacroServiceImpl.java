@@ -54,18 +54,24 @@ public class ResultadoSimulacroServiceImpl implements ResultadoSimulacroService 
         Simulacro simulacro = simulacroRepo.findById(simulacroId)
                 .orElseThrow(() -> new RuntimeException("Simulacro no encontrado"));
 
-        if (!archivo.getContentType().equals("application/pdf")) {
+        if (!"application/pdf".equals(archivo.getContentType())) {
             throw new RuntimeException("Solo se permiten archivos PDF");
         }
 
         try {
+            byte[] bytes = archivo.getBytes();
+            if (bytes.length < 4
+                    || bytes[0] != '%' || bytes[1] != 'P' || bytes[2] != 'D' || bytes[3] != 'F') {
+                throw new RuntimeException("El archivo no es un PDF válido");
+            }
+
             int global = puntajeSociales + puntajeNaturales + puntajeMatematicas
                     + puntajelecturaCritica + puntajeIngles;
 
             ResultadoSimulacro resultado = new ResultadoSimulacro();
             resultado.setNombreArchivo(archivo.getOriginalFilename());
             resultado.setTipoArchivo(archivo.getContentType());
-            resultado.setDatos(archivo.getBytes());
+            resultado.setDatos(bytes);
             resultado.setPuntajeSociales(puntajeSociales);
             resultado.setPuntajeNaturales(puntajeNaturales);
             resultado.setPuntajeMatematicas(puntajeMatematicas);
