@@ -90,16 +90,18 @@ public class UsuarioController {
 	
 	@PostMapping("/registro")
 	public String registrarUsuario(@ModelAttribute("persona") PersonaDTO personaDTO) {
-		boolean exito;
 		if (personaDTO.getRol() == 2) {
-			exito =  (usuarioServicio.crearDocente(personaDTO) == null) ? false : true; 
-		}else if (personaDTO.getRol() == 3) {
-			exito =  usuarioServicio.crearEstudiante(personaDTO) == null ? false : true; 
+			if (usuarioServicio.existeDocumentoDocente(personaDTO.getDocumentoIdentidad()))
+				return "redirect:/registroDocente?errorDocumento";
+			boolean exito = usuarioServicio.crearDocente(personaDTO) != null;
+			return exito ? "redirect:/registroDocente?exito" : "redirect:/registroDocente?error";
+		} else if (personaDTO.getRol() == 3) {
+			if (usuarioServicio.existeDocumentoEstudiante(personaDTO.getDocumentoIdentidad()))
+				return "redirect:/registroEstudiante?errorDocumento";
+			boolean exito = usuarioServicio.crearEstudiante(personaDTO) != null;
+			return exito ? "redirect:/registroEstudiante?exito" : "redirect:/registroEstudiante?error";
 		}
-		else {
-			exito = false;
-		}
-		return exito ? "redirect:/registro?exito" : "redirect:/registro?error";
+		return "redirect:/login";
 	}
 	
 
