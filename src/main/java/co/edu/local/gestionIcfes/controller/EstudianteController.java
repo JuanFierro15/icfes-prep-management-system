@@ -255,8 +255,15 @@ public class EstudianteController {
 
     @GetMapping("/descargarMaterial/{id}")
     @Transactional(readOnly = true)
-    public ResponseEntity<byte[]> descargarMaterial(@PathVariable Long id) {
+    public ResponseEntity<byte[]> descargarMaterial(@PathVariable Long id, Authentication authentication) {
         MaterialEstudio material = materialEstudioServices.descargarMaterial(id);
+
+        Estudiante estudiante = estudianteService.buscarPorUsername(authentication.getName());
+        if (estudiante.getInstitucion() == null || material.getInstitucion() == null
+                || !material.getInstitucion().getId().equals(estudiante.getInstitucion().getId())) {
+            return ResponseEntity.status(403).build();
+        }
+
         byte[] archivo = material.getArchivo();
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION,
