@@ -150,11 +150,11 @@
               <div class="row g-3">
                 <div class="col-md-6">
                   <label class="form-label fw-semibold" th:text="#{form.start.date}">Fecha Inicio</label>
-                  <input type="date" name="fechaInicio" id="editFechaInicio" class="form-control" />
+                  <input type="date" name="fechaInicio" id="editFechaInicio" class="form-control" required />
                 </div>
                 <div class="col-md-6">
                   <label class="form-label fw-semibold" th:text="#{form.end.date}">Fecha Final</label>
-                  <input type="date" name="fechaFinal" id="editFechaFinal" class="form-control" />
+                  <input type="date" name="fechaFinal" id="editFechaFinal" class="form-control" required />
                 </div>
               </div>
               <div class="mb-3 mt-3">
@@ -200,11 +200,11 @@
               <div class="row g-3">
                 <div class="col-md-6">
                   <label class="form-label fw-semibold" th:text="#{form.start.date}">Fecha Inicio</label>
-                  <input type="date" class="form-control" th:field="*{fechaInicio}" />
+                  <input type="date" class="form-control" th:field="*{fechaInicio}" required />
                 </div>
                 <div class="col-md-6">
                   <label class="form-label fw-semibold" th:text="#{form.end.date}">Fecha Final</label>
-                  <input type="date" class="form-control" th:field="*{fechaFinal}" />
+                  <input type="date" class="form-control" th:field="*{fechaFinal}" required />
                 </div>
               </div>
               <div class="mb-3 mt-3">

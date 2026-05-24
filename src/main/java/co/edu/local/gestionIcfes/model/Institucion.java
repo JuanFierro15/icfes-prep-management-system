@@ -49,8 +49,10 @@ public class Institucion {
 	@Column(name = "inst_direccion", nullable = false)
 	private String direccion;
 	
+	@Column(nullable = false)
 	private LocalDate fechaInicio;
-	
+
+	@Column(nullable = false)
 	private LocalDate fechaFinal;
 	
 	@Enumerated(EnumType.STRING)
