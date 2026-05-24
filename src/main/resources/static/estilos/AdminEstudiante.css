@@ -330,6 +330,22 @@ to {
     color: #7c3aed !important;
 }
 
+.perfil-avatar {
+  width: 48px; height: 48px;
+  background: linear-gradient(135deg, #3b82f6, #6366f1);
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+.usuario-avatar {
+  width: 28px; height: 28px;
+  background: linear-gradient(135deg, #3b82f6, #6366f1);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
 /* Responsive: solo íconos en pantallas pequeñas */
 @media (max-width: 768px) {
     .btn-action span {

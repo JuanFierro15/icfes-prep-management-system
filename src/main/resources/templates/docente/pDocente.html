@@ -14,7 +14,6 @@
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
     />
     <link rel="stylesheet" th:href="@{/estilos/pDocente.css}" />
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   </head>
 
   <body>
@@ -94,14 +93,13 @@
             <h6 class="fw-semibold mb-3">
               <i class="bi bi-bar-chart-line me-2 text-primary"></i><span th:text="#{teacher.progress.title}">Progreso del Curso</span>
             </h6>
-            <div class="progress mb-2" style="height: 14px; border-radius: 8px;">
-              <div class="progress-bar bg-primary"
+            <div class="progress mb-2 progress-course">
+              <div class="progress-bar bg-primary progress-bar-rounded"
                    role="progressbar"
                    th:style="'width: ' + ${progresoCurso} + '%'"
                    th:attr="aria-valuenow=${progresoCurso}"
                    aria-valuemin="0"
-                   aria-valuemax="100"
-                   style="border-radius: 8px;"></div>
+                   aria-valuemax="100"></div>
             </div>
             <div class="d-flex justify-content-between">
               <small class="text-muted" th:text="|${progresoCurso}#{teacher.progress.completed}|"></small>
@@ -196,5 +194,6 @@
       </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>
