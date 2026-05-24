@@ -259,6 +259,15 @@ body {
   width: 100%;
 }
 
+.progress-course {
+  height: 14px;
+  border-radius: 8px;
+}
+
+.progress-bar-rounded {
+  border-radius: 8px;
+}
+
 /* BUTTONS */
 .btn-main {
   background: #2b3ea8;

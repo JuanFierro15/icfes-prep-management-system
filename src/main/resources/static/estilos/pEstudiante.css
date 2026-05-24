@@ -280,6 +280,19 @@ body {
   color: #2b3ea8;
 }
 
+.progress-course {
+  height: 12px;
+  border-radius: 8px;
+}
+
+.chart-canvas {
+  max-height: 300px;
+}
+
+.simulacro-select {
+  max-width: 320px;
+}
+
    .score-card {
         background: #fff;
         border-radius: 12px;
