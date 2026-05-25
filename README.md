@@ -55,7 +55,7 @@ Sistema web para la gestión académica de instituciones de preparación para el
 ### 1. Clonar el repositorio
 
 ```bash
-git clone https://github.com/MiguelMD06/ProyectoIngSoftw.git
+git clone https://github.com/JuanFierro15/icfes-prep-management-system.git
 cd ProyectoIngSoftw
 ```
 
