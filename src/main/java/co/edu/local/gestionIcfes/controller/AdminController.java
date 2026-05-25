@@ -349,8 +349,13 @@ public class AdminController {
     }
 
     @GetMapping("/eliminarDocente/{id}")
-    public String eliminarDocente(@PathVariable String id) {
-        docenteService.eliminarDocente(id);
+    public String eliminarDocente(@PathVariable String id, RedirectAttributes redirectAttributes) {
+        try {
+            docenteService.eliminarDocente(id);
+            redirectAttributes.addFlashAttribute("exitoDocente", "Docente eliminado exitosamente.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorDocente", "Error al eliminar el docente.");
+        }
         return "redirect:/admin/AdminDocente";
     }
 
