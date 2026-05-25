@@ -1,232 +1,233 @@
 <!doctype html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Gestión de Instituciones</title>
-    <link rel="icon" th:href="@{/assets/gestion-icon.png}" type="image/png">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
-    <link rel="stylesheet" th:href="@{/estilos/AdminEstudiante.css}" />
-  </head>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-  <body>
-    <div th:replace="~{fragments/navbarAdmin :: navbar}"></div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gestión de Instituciones</title>
+  <link rel="icon" th:href="@{/assets/gestion-icon.png}" type="image/png">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
+  <link rel="stylesheet" th:href="@{/estilos/AdminEstudiante.css}" />
+</head>
 
-    <br />
-    <div class="header container">
-      <h2 th:text="#{admin.welcome}">Bienvenido Administrador,</h2>
-      <h3 sec:authentication="principal.username"></h3>
-      <p class="text-muted" th:text="#{institutions.subtitle}">Administra las instituciones registradas en el sistema.</p>
+<body>
+  <div th:replace="~{fragments/navbarAdmin :: navbar}"></div>
+
+  <br />
+  <div class="header container">
+    <h2 th:text="#{admin.welcome}">Bienvenido Administrador,</h2>
+    <h3 sec:authentication="principal.username"></h3>
+    <p class="text-muted" th:text="#{institutions.subtitle}">Administra las instituciones registradas en el sistema.</p>
+  </div>
+
+  <div class="title-section container">
+    <h2 th:text="#{institutions.page.title}">Panel de Instituciones</h2>
+    <button class="btn btn-create text-white mt-3" data-bs-toggle="modal" data-bs-target="#modalCrear">
+      <i class="bi bi-plus" aria-hidden="true"></i> <span th:text="#{institutions.new}">Nueva Institución</span>
+    </button>
+  </div>
+
+  <!-- ALERTAS -->
+  <div class="container">
+    <div th:if="${exitoInstitucion}" class="alert alert-success alert-dismissible fade show" role="alert">
+      <i class="bi bi-check-circle-fill me-2" aria-hidden="true"></i>
+      <span th:text="${exitoInstitucion}"></span>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar alerta"></button>
     </div>
-
-    <div class="title-section container">
-      <h2 th:text="#{institutions.page.title}">Panel de Instituciones</h2>
-      <button class="btn btn-create text-white mt-3"
-              data-bs-toggle="modal" data-bs-target="#modalCrear">
-        <i class="bi bi-plus"></i> <span th:text="#{institutions.new}">Nueva Institución</span>
-      </button>
+    <div th:if="${errorInstitucion}" class="alert alert-danger alert-dismissible fade show" role="alert">
+      <i class="bi bi-exclamation-triangle-fill me-2" aria-hidden="true"></i>
+      <span th:text="${errorInstitucion}"></span>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar alerta"></button>
     </div>
+  </div>
 
-    <!-- ALERTAS -->
-    <div class="container">
-      <div th:if="${exitoInstitucion}"
-           class="alert alert-success alert-dismissible fade show" role="alert">
-        <i class="bi bi-check-circle-fill me-2"></i>
-        <span th:text="${exitoInstitucion}"></span>
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  <!-- TABLA -->
+  <div class="container mb-5">
+    <div class="table-card">
+
+      <div th:if="${instituciones == null or instituciones.isEmpty()}" class="alert alert-info mt-2"
+        th:text="#{institutions.empty}">
+        No hay instituciones registradas.
       </div>
-      <div th:if="${errorInstitucion}"
-           class="alert alert-danger alert-dismissible fade show" role="alert">
-        <i class="bi bi-exclamation-triangle-fill me-2"></i>
-        <span th:text="${errorInstitucion}"></span>
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+
+      <div class="table-responsive" th:if="${instituciones != null and !instituciones.isEmpty()}">
+        <table class="table align-middle table-striped" aria-label="Lista de instituciones">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col" th:text="#{institutions.col.name}">Nombre</th>
+              <th scope="col" th:text="#{institutions.col.address}">Dirección</th>
+              <th scope="col" th:text="#{institutions.col.start.date}">Fecha Inicio</th>
+              <th scope="col" th:text="#{institutions.col.end.date}">Fecha Final</th>
+              <th scope="col" th:text="#{institutions.col.state}">Estado</th>
+              <th scope="col" th:text="#{students.col.actions}">Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="tbodyInstituciones">
+            <tr th:each="inst, iterStat : ${instituciones}">
+              <td th:text="${iterStat.index + 1}"></td>
+              <td class="fw-semibold" th:text="${inst.nombre}"></td>
+              <td th:text="${inst.direccion}"></td>
+              <td th:text="${inst.fechaInicio != null ? #temporals.format(inst.fechaInicio, 'dd/MM/yyyy') : '—'}"></td>
+              <td th:text="${inst.fechaFinal != null ? #temporals.format(inst.fechaFinal, 'dd/MM/yyyy') : '—'}"></td>
+              <td>
+                <span th:if="${inst.estado != null}" class="badge"
+                  th:classappend="${inst.estado.name() == 'ACTIVO'} ? 'bg-success' : 'bg-secondary'"
+                  th:text="${inst.estado.name() == 'ACTIVO'} ? #{institutions.state.active} : #{institutions.state.finished}">
+                </span>
+                <span th:if="${inst.estado == null}" class="text-muted">—</span>
+              </td>
+              <td>
+                <div class="dropdown">
+                  <button class="btn btn-action btn-acciones dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                    aria-expanded="false" aria-label="Opciones de acciones">
+                    <i class="bi bi-grid-3x3-gap-fill" aria-hidden="true"></i>
+                    <span th:text="#{btn.actions}">Acciones</span>
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-end shadow">
+                    <li>
+                      <button class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#modalEditar"
+                        th:data-id="${inst.id}" th:data-nombre="${inst.nombre}" th:data-direccion="${inst.direccion}"
+                        th:data-fecha-inicio="${inst.fechaInicio}" th:data-fecha-final="${inst.fechaFinal}"
+                        th:data-estado="${inst.estado}">
+                        <i class="bi bi-pencil-square text-primary me-2" aria-hidden="true"></i><span
+                          th:text="#{btn.edit}">Editar</span>
+                      </button>
+                    </li>
+                    <li>
+                      <hr class="dropdown-divider" />
+                    </li>
+                    <li>
+                      <a class="dropdown-item text-danger" th:href="@{/admin/eliminarInstitucion/{id}(id=${inst.id})}"
+                        th:data-confirm="#{institutions.confirm.delete}"
+                        onclick="return confirm(this.getAttribute('data-confirm'))">
+                        <i class="bi bi-trash3 me-2" aria-hidden="true"></i><span
+                          th:text="#{btn.delete}">Eliminar</span>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
+  </div>
 
-    <!-- TABLA -->
-    <div class="container mb-5">
-      <div class="table-card">
-
-        <div th:if="${instituciones == null or instituciones.isEmpty()}"
-             class="alert alert-info mt-2" th:text="#{institutions.empty}">
-          No hay instituciones registradas.
+  <!-- MODAL EDITAR -->
+  <div class="modal fade" id="modalEditar" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalEditarLabel">
+            <i class="bi bi-pencil-square me-2" aria-hidden="true"></i><span
+              th:text="#{institutions.modal.edit.title}">Editar Institución</span>
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar diálogo"></button>
         </div>
-
-        <div class="table-responsive" th:if="${instituciones != null and !instituciones.isEmpty()}">
-          <table class="table align-middle table-striped">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th th:text="#{institutions.col.name}">Nombre</th>
-                <th th:text="#{institutions.col.address}">Dirección</th>
-                <th th:text="#{institutions.col.start.date}">Fecha Inicio</th>
-                <th th:text="#{institutions.col.end.date}">Fecha Final</th>
-                <th th:text="#{institutions.col.state}">Estado</th>
-                <th th:text="#{students.col.actions}">Acciones</th>
-              </tr>
-            </thead>
-            <tbody id="tbodyInstituciones">
-              <tr th:each="inst, iterStat : ${instituciones}">
-                <td th:text="${iterStat.index + 1}"></td>
-                <td class="fw-semibold" th:text="${inst.nombre}"></td>
-                <td th:text="${inst.direccion}"></td>
-                <td th:text="${inst.fechaInicio != null ? #temporals.format(inst.fechaInicio, 'dd/MM/yyyy') : '—'}"></td>
-                <td th:text="${inst.fechaFinal != null ? #temporals.format(inst.fechaFinal, 'dd/MM/yyyy') : '—'}"></td>
-                <td>
-                  <span th:if="${inst.estado != null}"
-                        class="badge"
-                        th:classappend="${inst.estado.name() == 'ACTIVO'} ? 'bg-success' : 'bg-secondary'"
-                        th:text="${inst.estado.name() == 'ACTIVO'} ? #{institutions.state.active} : #{institutions.state.finished}">
-                  </span>
-                  <span th:if="${inst.estado == null}" class="text-muted">—</span>
-                </td>
-                <td>
-                  <div class="dropdown">
-                    <button class="btn btn-action btn-acciones dropdown-toggle"
-                            type="button"
-                            data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                      <i class="bi bi-grid-3x3-gap-fill"></i>
-                      <span th:text="#{btn.actions}">Acciones</span>
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-end shadow">
-                      <li>
-                        <button class="dropdown-item"
-                                type="button"
-                                data-bs-toggle="modal"
-                                data-bs-target="#modalEditar"
-                                th:data-id="${inst.id}"
-                                th:data-nombre="${inst.nombre}"
-                                th:data-direccion="${inst.direccion}"
-                                th:data-fecha-inicio="${inst.fechaInicio}"
-                                th:data-fecha-final="${inst.fechaFinal}"
-                                th:data-estado="${inst.estado}">
-                          <i class="bi bi-pencil-square text-primary me-2"></i><span th:text="#{btn.edit}">Editar</span>
-                        </button>
-                      </li>
-                      <li><hr class="dropdown-divider" /></li>
-                      <li>
-                        <a class="dropdown-item text-danger"
-                           th:href="@{/admin/eliminarInstitucion/{id}(id=${inst.id})}"
-                           th:data-confirm="#{institutions.confirm.delete}"
-                           onclick="return confirm(this.getAttribute('data-confirm'))">
-                          <i class="bi bi-trash3 me-2"></i><span th:text="#{btn.delete}">Eliminar</span>
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <!-- MODAL EDITAR -->
-    <div class="modal fade" id="modalEditar" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="modalEditarLabel">
-              <i class="bi bi-pencil-square me-2"></i><span th:text="#{institutions.modal.edit.title}">Editar Institución</span>
-            </h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        <form th:action="@{/admin/actualizarInstitucion}" method="post">
+          <div class="modal-body">
+            <input type="hidden" name="id" id="editId" />
+            <div class="mb-3">
+              <label class="form-label fw-semibold" for="editNombre" th:text="#{form.name}">Nombre</label>
+              <input type="text" name="nombre" id="editNombre" class="form-control" required />
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-semibold" for="editDireccion" th:text="#{form.address}">Dirección</label>
+              <input type="text" name="direccion" id="editDireccion" class="form-control" required />
+            </div>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label fw-semibold" for="editFechaInicio" th:text="#{form.start.date}">Fecha
+                  Inicio</label>
+                <input type="date" name="fechaInicio" id="editFechaInicio" class="form-control" required />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold" for="editFechaFinal" th:text="#{form.end.date}">Fecha
+                  Final</label>
+                <input type="date" name="fechaFinal" id="editFechaFinal" class="form-control" required />
+              </div>
+            </div>
+            <div class="mb-3 mt-3">
+              <label class="form-label fw-semibold" for="editEstado" th:text="#{form.state}">Estado</label>
+              <select name="estado" id="editEstado" class="form-select">
+                <option value="ACTIVO" th:text="#{institutions.state.active}">Activo</option>
+                <option value="FINALIZADO" th:text="#{institutions.state.finished}">Finalizado</option>
+              </select>
+            </div>
           </div>
-          <form th:action="@{/admin/actualizarInstitucion}" method="post">
-            <div class="modal-body">
-              <input type="hidden" name="id" id="editId" />
-              <div class="mb-3">
-                <label class="form-label fw-semibold" th:text="#{form.name}">Nombre</label>
-                <input type="text" name="nombre" id="editNombre" class="form-control" required />
-              </div>
-              <div class="mb-3">
-                <label class="form-label fw-semibold" th:text="#{form.address}">Dirección</label>
-                <input type="text" name="direccion" id="editDireccion" class="form-control" required />
-              </div>
-              <div class="row g-3">
-                <div class="col-md-6">
-                  <label class="form-label fw-semibold" th:text="#{form.start.date}">Fecha Inicio</label>
-                  <input type="date" name="fechaInicio" id="editFechaInicio" class="form-control" required />
-                </div>
-                <div class="col-md-6">
-                  <label class="form-label fw-semibold" th:text="#{form.end.date}">Fecha Final</label>
-                  <input type="date" name="fechaFinal" id="editFechaFinal" class="form-control" required />
-                </div>
-              </div>
-              <div class="mb-3 mt-3">
-                <label class="form-label fw-semibold" th:text="#{form.state}">Estado</label>
-                <select name="estado" id="editEstado" class="form-select">
-                  <option value="ACTIVO" th:text="#{institutions.state.active}">Activo</option>
-                  <option value="FINALIZADO" th:text="#{institutions.state.finished}">Finalizado</option>
-                </select>
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" th:text="#{btn.cancel}">Cancelar</button>
-              <button type="submit" class="btn btn-edit text-white">
-                <i class="bi bi-save me-1"></i><span th:text="#{institutions.modal.save}">Guardar cambios</span>
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-
-    <!-- MODAL CREAR -->
-    <div class="modal fade" id="modalCrear" tabindex="-1" aria-labelledby="modalCrearLabel" aria-hidden="true">
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="modalCrearLabel">
-              <i class="bi bi-building-add me-2"></i><span th:text="#{institutions.modal.create.title}">Nueva Institución</span>
-            </h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+              th:text="#{btn.cancel}">Cancelar</button>
+            <button type="submit" class="btn btn-edit text-white">
+              <i class="bi bi-save me-1" aria-hidden="true"></i><span th:text="#{institutions.modal.save}">Guardar
+                cambios</span>
+            </button>
           </div>
-          <form th:action="@{/admin/crearInstitucion}" method="post" th:object="${nuevaInstitucion}">
-            <input type="hidden" name="origen" value="instituciones" />
-            <div class="modal-body">
-              <div class="mb-3">
-                <label class="form-label fw-semibold" th:text="#{form.name}">Nombre</label>
-                <input type="text" class="form-control" th:field="*{nombre}" required />
-              </div>
-              <div class="mb-3">
-                <label class="form-label fw-semibold" th:text="#{form.address}">Dirección</label>
-                <input type="text" class="form-control" th:field="*{direccion}" required />
-              </div>
-              <div class="row g-3">
-                <div class="col-md-6">
-                  <label class="form-label fw-semibold" th:text="#{form.start.date}">Fecha Inicio</label>
-                  <input type="date" class="form-control" th:field="*{fechaInicio}" required />
-                </div>
-                <div class="col-md-6">
-                  <label class="form-label fw-semibold" th:text="#{form.end.date}">Fecha Final</label>
-                  <input type="date" class="form-control" th:field="*{fechaFinal}" required />
-                </div>
-              </div>
-              <div class="mb-3 mt-3">
-                <label class="form-label fw-semibold" th:text="#{form.state}">Estado</label>
-                <select class="form-select" th:field="*{estado}" required>
-                  <option th:value="ACTIVO" th:text="#{institutions.state.active}">Activo</option>
-                  <option th:value="FINALIZADO" th:text="#{institutions.state.finished}">Finalizado</option>
-                </select>
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" th:text="#{btn.cancel}">Cancelar</button>
-              <button type="submit" class="btn btn-create text-white">
-                <i class="bi bi-plus me-1"></i><span th:text="#{btn.register}">Registrar</span>
-              </button>
-            </div>
-          </form>
-        </div>
+        </form>
       </div>
     </div>
+  </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script th:src="@{/js/paginacion.js}"></script>
-    <script th:src="@{/js/admin-institucion.js}"></script>
-  </body>
+  <!-- MODAL CREAR -->
+  <div class="modal fade" id="modalCrear" tabindex="-1" aria-labelledby="modalCrearLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalCrearLabel">
+            <i class="bi bi-building-add me-2" aria-hidden="true"></i><span
+              th:text="#{institutions.modal.create.title}">Nueva Institución</span>
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar diálogo"></button>
+        </div>
+        <form th:action="@{/admin/crearInstitucion}" method="post" th:object="${nuevaInstitucion}">
+          <input type="hidden" name="origen" value="instituciones" />
+          <div class="modal-body">
+            <div class="mb-3">
+              <label class="form-label fw-semibold" for="crearNombre" th:text="#{form.name}">Nombre</label>
+              <input type="text" id="crearNombre" class="form-control" th:field="*{nombre}" required />
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-semibold" for="crearDireccion" th:text="#{form.address}">Dirección</label>
+              <input type="text" id="crearDireccion" class="form-control" th:field="*{direccion}" required />
+            </div>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label fw-semibold" for="crearFechaInicio" th:text="#{form.start.date}">Fecha
+                  Inicio</label>
+                <input type="date" id="crearFechaInicio" class="form-control" th:field="*{fechaInicio}" required />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold" for="crearFechaFinal" th:text="#{form.end.date}">Fecha
+                  Final</label>
+                <input type="date" id="crearFechaFinal" class="form-control" th:field="*{fechaFinal}" required />
+              </div>
+            </div>
+            <div class="mb-3 mt-3">
+              <label class="form-label fw-semibold" for="crearEstado" th:text="#{form.state}">Estado</label>
+              <select id="crearEstado" class="form-select" th:field="*{estado}" required>
+                <option th:value="ACTIVO" th:text="#{institutions.state.active}">Activo</option>
+                <option th:value="FINALIZADO" th:text="#{institutions.state.finished}">Finalizado</option>
+              </select>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+              th:text="#{btn.cancel}">Cancelar</button>
+            <button type="submit" class="btn btn-create text-white">
+              <i class="bi bi-plus me-1" aria-hidden="true"></i><span th:text="#{btn.register}">Registrar</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script th:src="@{/js/paginacion.js}"></script>
+  <script th:src="@{/js/admin-institucion.js}"></script>
+</body>
+
 </html>

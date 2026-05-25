@@ -24,30 +24,30 @@
     </div>
     <div class="title-section container">
       <h2 th:text="#{teachers.page.title}">Panel de Docentes</h2>
-      <a class="btn btn-create text-white mt-3 bi bi-plus"
+      <a class="btn btn-create text-white mt-3"
          th:href="@{/registroDocente}"
-         th:text="#{teachers.create}"> Crear Docente</a>
+         th:text="#{teachers.create}"><i class="bi bi-plus" aria-hidden="true"></i> Crear Docente</a>
     </div>
 
     <div class="container mb-5">
       <div class="table-card">
         <div class="table-responsive"
              th:if="${docentes != null and !docentes.isEmpty()}">
-          <table class="table align-middle table-striped">
+          <table class="table align-middle table-striped" aria-label="Lista de docentes">
             <thead>
               <tr>
-                <th>#</th>
-                <th th:text="#{students.col.document}">Documento</th>
-                <th th:text="#{students.col.idtype}">Tipo Identificación</th>
-                <th th:text="#{students.col.firstname}">Primer Nombre</th>
-                <th th:text="#{students.col.secondname}">Segundo Nombre</th>
-                <th th:text="#{students.col.lastname}">Primer Apellido</th>
-                <th th:text="#{students.col.secondlast}">Segundo Apellido</th>
-                <th th:text="#{students.col.phone}">Celular</th>
-                <th>Email</th>
-                <th th:text="#{teachers.col.subject}">Materia</th>
-                <th th:text="#{students.col.institution}">Institución</th>
-                <th th:text="#{students.col.actions}">Acciones</th>
+                <th scope="col">#</th>
+                <th scope="col" th:text="#{students.col.document}">Documento</th>
+                <th scope="col" th:text="#{students.col.idtype}">Tipo Identificación</th>
+                <th scope="col" th:text="#{students.col.firstname}">Primer Nombre</th>
+                <th scope="col" th:text="#{students.col.secondname}">Segundo Nombre</th>
+                <th scope="col" th:text="#{students.col.lastname}">Primer Apellido</th>
+                <th scope="col" th:text="#{students.col.secondlast}">Segundo Apellido</th>
+                <th scope="col" th:text="#{students.col.phone}">Celular</th>
+                <th scope="col">Email</th>
+                <th scope="col" th:text="#{teachers.col.subject}">Materia</th>
+                <th scope="col" th:text="#{students.col.institution}">Institución</th>
+                <th scope="col" th:text="#{students.col.actions}">Acciones</th>
               </tr>
             </thead>
             <tbody id="tbodyDocentes">
@@ -66,15 +66,15 @@
                 <td>
                   <div class="dropdown">
                     <button class="btn btn-action btn-acciones dropdown-toggle" type="button"
-                            data-bs-toggle="dropdown" aria-expanded="false">
-                      <i class="bi bi-grid-3x3-gap-fill"></i>
+                            data-bs-toggle="dropdown" aria-expanded="false" aria-label="Opciones de acciones">
+                      <i class="bi bi-grid-3x3-gap-fill" aria-hidden="true"></i>
                       <span th:text="#{btn.actions}">Acciones</span>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end shadow">
                       <li>
                         <a class="dropdown-item"
                            th:href="@{/admin/AdminDocente/modificar/} + ${doc.documentoIdentidad}">
-                          <i class="bi bi-pencil-square text-primary me-2"></i>
+                          <i class="bi bi-pencil-square text-primary me-2" aria-hidden="true"></i>
                           <span th:text="#{btn.edit}">Editar</span>
                         </a>
                       </li>
@@ -84,7 +84,7 @@
                            th:href="@{/admin/eliminarDocente/{id}(id=${doc.documentoIdentidad})}"
                            th:data-confirm="#{teachers.confirm.delete}"
                            onclick="return confirm(this.getAttribute('data-confirm'))">
-                          <i class="bi bi-trash3 me-2"></i>
+                          <i class="bi bi-trash3 me-2" aria-hidden="true"></i>
                           <span th:text="#{btn.delete}">Eliminar</span>
                         </a>
                       </li>
