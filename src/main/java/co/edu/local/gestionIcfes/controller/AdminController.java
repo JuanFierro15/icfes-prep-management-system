@@ -399,9 +399,16 @@ public class AdminController {
             @RequestParam Long id,
             @RequestParam String passwordNueva,
             @RequestParam String confirmarPassword,
+            Authentication authentication,
             RedirectAttributes redirectAttributes) {
         if (!passwordNueva.equals(confirmarPassword)) {
             redirectAttributes.addFlashAttribute("errorUsuarios", "Las contraseñas no coinciden.");
+            return "redirect:/admin/configuracion";
+        }
+        Usuario adminActual = usuarioRepositorio.findByUsername(authentication.getName());
+        Usuario objetivo = usuarioRepositorio.findById(id).orElse(null);
+        if (objetivo != null && "Aldemar".equals(objetivo.getUsername()) && !"Aldemar".equals(adminActual.getUsername())) {
+            redirectAttributes.addFlashAttribute("errorUsuarios", "No tienes permisos para modificar al administrador principal.");
             return "redirect:/admin/configuracion";
         }
         usuarioService.cambiarPasswordAdmin(id, passwordNueva);
@@ -415,6 +422,11 @@ public class AdminController {
         Usuario adminActual = usuarioRepositorio.findByUsername(authentication.getName());
         if (adminActual.getId().equals(id)) {
             redirectAttributes.addFlashAttribute("errorUsuarios", "No puedes desactivar tu propia cuenta.");
+            return "redirect:/admin/configuracion";
+        }
+        Usuario objetivo = usuarioRepositorio.findById(id).orElse(null);
+        if (objetivo != null && "Aldemar".equals(objetivo.getUsername()) && !"Aldemar".equals(adminActual.getUsername())) {
+            redirectAttributes.addFlashAttribute("errorUsuarios", "No tienes permisos para modificar al administrador principal.");
             return "redirect:/admin/configuracion";
         }
         usuarioService.toggleActivo(id);
@@ -439,7 +451,14 @@ public class AdminController {
     }
 
     @GetMapping("/configuracion/restablecerPassword/{id}")
-    public String restablecerPassword(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+    public String restablecerPassword(@PathVariable Long id, Authentication authentication,
+                                      RedirectAttributes redirectAttributes) {
+        Usuario adminActual = usuarioRepositorio.findByUsername(authentication.getName());
+        Usuario objetivo = usuarioRepositorio.findById(id).orElse(null);
+        if (objetivo != null && "Aldemar".equals(objetivo.getUsername()) && !"Aldemar".equals(adminActual.getUsername())) {
+            redirectAttributes.addFlashAttribute("errorUsuarios", "No tienes permisos para modificar al administrador principal.");
+            return "redirect:/admin/configuracion";
+        }
         boolean exito = usuarioService.restablecerPassword(id);
         if (exito) {
             redirectAttributes.addFlashAttribute("exitoUsuarios", "Contraseña restablecida al número de documento.");

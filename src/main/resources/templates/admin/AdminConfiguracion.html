@@ -208,7 +208,12 @@
                       </span>
                     </td>
                     <td class="text-center">
-                      <div class="dropdown">
+                      <!-- Aldemar no puede ser modificado por otros administradores -->
+                      <span th:if="${usr.username == 'Aldemar' and adminActual.username != 'Aldemar'}"
+                            class="badge bg-secondary py-2 px-3">
+                        <i class="bi bi-shield-lock me-1" aria-hidden="true"></i>Admin principal
+                      </span>
+                      <div class="dropdown" th:unless="${usr.username == 'Aldemar' and adminActual.username != 'Aldemar'}">
                         <button class="btn btn-action btn-acciones dropdown-toggle"
                                 type="button" data-bs-toggle="dropdown" aria-expanded="false"
                                 aria-label="Opciones de acciones">
