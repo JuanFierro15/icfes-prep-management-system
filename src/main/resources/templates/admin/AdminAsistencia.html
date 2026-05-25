@@ -83,7 +83,7 @@
       <div class="alert alert-success alert-dismissible fade show">
         <i class="bi bi-check-circle-fill me-2"></i>
         <span th:text="${exitoAsistencia}"></span>
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar alerta"></button>
       </div>
     </div>
 
@@ -141,7 +141,8 @@
                     <input type="hidden" name="documentos" th:value="${est.documentoIdentidad}" />
                   </td>
                   <td>
-                    <select name="estados" class="form-select form-select-sm w-auto">
+                    <select name="estados" class="form-select form-select-sm w-auto"
+                            th:aria-label="${'Estado de asistencia para ' + est.primerNombre + ' ' + est.primerApellido}">
                       <option
                         th:each="e : ${estadosDisponibles}"
                         th:value="${e}"

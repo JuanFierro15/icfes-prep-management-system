@@ -125,17 +125,17 @@
             <input type="hidden" id="modalId" name="id" />
 
             <div class="mb-3">
-              <label class="form-label fw-semibold" th:text="#{form.title}">Título</label>
+              <label class="form-label fw-semibold" for="modalTituloInput" th:text="#{form.title}">Título</label>
               <input type="text" id="modalTituloInput" name="titulo" class="form-control" required />
             </div>
 
             <div class="mb-3">
-              <label class="form-label fw-semibold" th:text="#{form.description}">Descripción</label>
+              <label class="form-label fw-semibold" for="modalDescripcion" th:text="#{form.description}">Descripción</label>
               <textarea id="modalDescripcion" name="descripcion" class="form-control" rows="3" required></textarea>
             </div>
 
             <div class="mb-2">
-              <label class="form-label fw-semibold" th:text="#{simulacros.modal.date}">Fecha de Aplicación</label>
+              <label class="form-label fw-semibold" for="modalFecha" th:text="#{simulacros.modal.date}">Fecha de Aplicación</label>
               <input type="date" id="modalFecha" name="fechaAplicacion" class="form-control" required />
             </div>
           </div>

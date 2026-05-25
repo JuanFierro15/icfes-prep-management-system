@@ -46,7 +46,7 @@
         <div class="row">
           <!-- TIPO IDENTIFICACION -->
           <div class="col-md-6 mb-3">
-            <label class="form-label" th:text="#{form.id.type}">Tipo de Identificación</label>
+            <label class="form-label" for="tipoIdentificacion" th:text="#{form.id.type}">Tipo de Identificación</label>
             <select id="tipoIdentificacion" name="tipoIdentificacion" class="form-select"
               th:field="*{tipoIdentificacion}" readonly>
               <option value="" th:text="#{form.select}">Seleccione...</option>
@@ -58,7 +58,7 @@
 
           <!-- NUMERO IDENTIFICACION -->
           <div class="col-md-6 mb-3">
-            <label class="form-label" th:text="#{form.id.number}">Número de Identificación</label>
+            <label class="form-label" for="numeroIdentificacion" th:text="#{form.id.number}">Número de Identificación</label>
             <input type="text" id="numeroIdentificacion" name="numeroIdentificacion" class="form-control"
               th:placeholder="#{form.id.number.placeholder}" th:field="*{documentoIdentidad}" readonly />
             <div id="errorNumeroId" class="error"></div>
@@ -66,7 +66,7 @@
 
           <!-- PRIMER NOMBRE -->
           <div class="col-md-6 mb-3">
-            <label class="form-label" th:text="#{form.first.name}">Primer Nombre</label>
+            <label class="form-label" for="primerNombre" th:text="#{form.first.name}">Primer Nombre</label>
             <input type="text" id="primerNombre" name="primerNombre" class="form-control"
               th:placeholder="#{form.first.name.placeholder}" th:field="*{primerNombre}" />
             <div id="errorPrimerNombre" class="error"></div>
@@ -74,14 +74,14 @@
 
           <!-- SEGUNDO NOMBRE -->
           <div class="col-md-6 mb-3">
-            <label class="form-label" th:text="#{form.second.name}">Segundo Nombre</label>
+            <label class="form-label" for="segundoNombre" th:text="#{form.second.name}">Segundo Nombre</label>
             <input type="text" id="segundoNombre" name="segundoNombre" class="form-control"
               th:placeholder="#{form.second.name.placeholder}" th:field="*{segundoNombre}" />
           </div>
 
           <!-- PRIMER APELLIDO -->
           <div class="col-md-6 mb-3">
-            <label class="form-label" th:text="#{form.first.last}">Primer Apellido</label>
+            <label class="form-label" for="primerApellido" th:text="#{form.first.last}">Primer Apellido</label>
             <input type="text" id="primerApellido" name="primerApellido" class="form-control"
               th:placeholder="#{form.first.last.placeholder}" th:field="*{primerApellido}" />
             <div id="errorPrimerApellido" class="error"></div>
@@ -89,14 +89,14 @@
 
           <!-- SEGUNDO APELLIDO -->
           <div class="col-md-6 mb-3">
-            <label class="form-label" th:text="#{form.second.last}">Segundo Apellido</label>
+            <label class="form-label" for="segundoApellido" th:text="#{form.second.last}">Segundo Apellido</label>
             <input type="text" id="segundoApellido" name="segundoApellido" class="form-control"
               th:placeholder="#{form.second.last.placeholder}" th:field="*{segundoApellido}" />
           </div>
 
           <!-- CELULAR -->
           <div class="col-md-6 mb-3">
-            <label class="form-label" th:text="#{form.phone}">Celular</label>
+            <label class="form-label" for="celular" th:text="#{form.phone}">Celular</label>
             <input type="tel" id="celular" name="celular" class="form-control" placeholder="3001234567"
               th:field="*{celular}" />
             <div id="errorCelular" class="error"></div>
@@ -104,7 +104,7 @@
 
           <!-- INSTITUCION -->
           <div class="col-md-6 mb-3">
-            <label class="form-label" th:text="#{form.institution}">Institución</label>
+            <label class="form-label" for="institucion" th:text="#{form.institution}">Institución</label>
             <select id="institucion" name="institucion" class="form-select" th:field="*{institucion}">
               <option value="" th:text="#{form.select}">Seleccione...</option>
               <option th:each="inst : ${instituciones}" th:value="${inst.id}" th:text="${inst.nombre}"></option>
@@ -114,7 +114,7 @@
 
           <!-- SALON -->
           <div class="col-md-6 mb-3">
-            <label class="form-label" th:text="#{form.classroom}">Salón</label>
+            <label class="form-label" for="salon" th:text="#{form.classroom}">Salón</label>
             <input type="text" id="salon" name="salon" class="form-control"
               th:placeholder="#{form.classroom.placeholder}" th:field="*{salon}" />
             <div id="errorSalon" class="error"></div>

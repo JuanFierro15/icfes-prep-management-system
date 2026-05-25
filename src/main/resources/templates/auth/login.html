@@ -65,13 +65,15 @@
           </div>
 
           <div class="mb-3 input-group">
-            <span class="input-group-text"><i class="bi bi-person"></i></span>
+            <label class="visually-hidden" for="username" th:text="#{login.username.label}">Usuario</label>
+            <span class="input-group-text"><i class="bi bi-person" aria-hidden="true"></i></span>
             <input type="text" class="form-control" name="username" id="username"
                    placeholder="John Doe" autocomplete="username" />
           </div>
 
           <div class="mb-3 input-group">
-            <span class="input-group-text"><i class="bi bi-lock"></i></span>
+            <label class="visually-hidden" for="password" th:text="#{login.password.label}">Contraseña</label>
+            <span class="input-group-text"><i class="bi bi-lock" aria-hidden="true"></i></span>
             <input type="password" class="form-control" placeholder="********"
                    name="password" id="password" autocomplete="current-password"/>
           </div>

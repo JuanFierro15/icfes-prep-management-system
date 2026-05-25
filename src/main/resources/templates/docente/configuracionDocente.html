@@ -55,8 +55,8 @@
             <form th:action="@{/docente/configuracion/cambiarUsername}" method="post" class="w-100">
               <input type="hidden" name="id" th:value="${docente.usuario.id}" />
               <div class="mb-3">
-                <label class="form-label fw-semibold" th:text="#{config.new.user}">Nuevo usuario</label>
-                <input type="text" name="nuevoUsername" class="form-control"
+                <label class="form-label fw-semibold" for="nuevoUsername" th:text="#{config.new.user}">Nuevo usuario</label>
+                <input type="text" name="nuevoUsername" id="nuevoUsername" class="form-control"
                        th:placeholder="#{config.new.user.placeholder}" required minlength="4" />
                 <div class="form-text" th:text="#{config.user.hint}">Al guardar, deberás iniciar sesión de nuevo con el nuevo usuario.</div>
               </div>
@@ -89,37 +89,40 @@
               <input type="hidden" name="id" th:value="${docente.usuario.id}" />
 
               <div class="mb-3">
-                <label class="form-label fw-semibold" th:text="#{form.password.current}">Contraseña actual</label>
+                <label class="form-label fw-semibold" for="passwordActual" th:text="#{form.password.current}">Contraseña actual</label>
                 <div class="input-group">
                   <input type="password" name="passwordActual" id="passwordActual"
                          class="form-control" required />
                   <button class="btn btn-outline-secondary" type="button"
-                          onclick="toggleVer('passwordActual', this)">
-                    <i class="bi bi-eye"></i>
+                          onclick="toggleVer('passwordActual', this)"
+                          th:aria-label="#{btn.toggle.password}">
+                    <i class="bi bi-eye" aria-hidden="true"></i>
                   </button>
                 </div>
               </div>
 
               <div class="mb-3">
-                <label class="form-label fw-semibold" th:text="#{form.password.new}">Nueva contraseña</label>
+                <label class="form-label fw-semibold" for="passwordNueva" th:text="#{form.password.new}">Nueva contraseña</label>
                 <div class="input-group">
                   <input type="password" name="passwordNueva" id="passwordNueva"
                          class="form-control" required minlength="6" />
                   <button class="btn btn-outline-secondary" type="button"
-                          onclick="toggleVer('passwordNueva', this)">
-                    <i class="bi bi-eye"></i>
+                          onclick="toggleVer('passwordNueva', this)"
+                          th:aria-label="#{btn.toggle.password}">
+                    <i class="bi bi-eye" aria-hidden="true"></i>
                   </button>
                 </div>
               </div>
 
               <div class="mb-4">
-                <label class="form-label fw-semibold" th:text="#{form.password.confirm}">Confirmar contraseña</label>
+                <label class="form-label fw-semibold" for="confirmarPassword" th:text="#{form.password.confirm}">Confirmar contraseña</label>
                 <div class="input-group">
                   <input type="password" name="confirmarPassword" id="confirmarPassword"
                          class="form-control" required minlength="6" />
                   <button class="btn btn-outline-secondary" type="button"
-                          onclick="toggleVer('confirmarPassword', this)">
-                    <i class="bi bi-eye"></i>
+                          onclick="toggleVer('confirmarPassword', this)"
+                          th:aria-label="#{btn.toggle.password}">
+                    <i class="bi bi-eye" aria-hidden="true"></i>
                   </button>
                 </div>
                 <div id="msgConfirmar" class="form-text text-danger d-none"
