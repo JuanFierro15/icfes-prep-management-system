@@ -60,6 +60,7 @@ public class DocenteServiceImpl implements DocenteService{
 	        docente.setPrimerApellido(personaDTO.getPrimerApellido());
 	        docente.setSegundoApellido(personaDTO.getSegundoApellido());
 	        docente.setCelular(personaDTO.getCelular());
+	        docente.setEspecialidad(personaDTO.getEspecialidad());
 	        logService.registrarLog("docente", "Docente actualizado " + docente.getPrimerNombre());
 	        return docenteRepository.save(docente);
 	    }
@@ -90,6 +91,7 @@ public class DocenteServiceImpl implements DocenteService{
 			persona.setSegundoNombre(docente.getSegundoNombre());
 			persona.setSalon(docente.getUsuario().getSalon());
 			persona.setTipoIdentificacion(docente.getTipoIdentificacion());
+			persona.setEspecialidad(docente.getEspecialidad());
 			persona.setRol(docente.getUsuario().getRoles().stream()
 				    .findFirst()
 				    .orElse(null).getId());

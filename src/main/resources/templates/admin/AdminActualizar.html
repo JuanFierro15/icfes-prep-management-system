@@ -120,6 +120,19 @@
             <div id="errorSalon" class="error"></div>
           </div>
 
+          <!-- ESPECIALIDAD (solo docentes) -->
+          <div class="col-md-6 mb-3" th:if="${persona.rol == 2}">
+            <label class="form-label" for="especialidad" th:text="#{form.subject}">Materia</label>
+            <select id="especialidad" name="especialidad" class="form-select" th:field="*{especialidad}">
+              <option value="" disabled th:text="#{register.select.subject}">Seleccione una materia...</option>
+              <option value="Sociales y Ciudadanas" th:text="#{register.subject.sociales}">Sociales y Ciudadanas</option>
+              <option value="Ciencias Naturales" th:text="#{register.subject.naturales}">Ciencias Naturales</option>
+              <option value="Matemáticas" th:text="#{register.subject.matematicas}">Matemáticas</option>
+              <option value="Lectura Crítica" th:text="#{register.subject.lectura}">Lectura Crítica</option>
+              <option value="Inglés" th:text="#{register.subject.ingles}">Inglés</option>
+            </select>
+          </div>
+
           <input type="hidden" th:field="*{rol}">
 
           <!-- BOTON -->
