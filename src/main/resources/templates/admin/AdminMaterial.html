@@ -1,178 +1,193 @@
 <!doctype html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Material de Estudio</title>
-    <link rel="icon" th:href="@{/assets/gestion-icon.png}" type="image/png">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
-    <link rel="stylesheet" th:href="@{/estilos/AdminMaterial.css}" />
-  </head>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-  <body>
-    <div th:replace="~{fragments/navbarAdmin :: navbar}"></div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Material de Estudio</title>
+  <link rel="icon" th:href="@{/assets/gestion-icon.png}" type="image/png">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" />
+  <link rel="stylesheet" th:href="@{/estilos/AdminMaterial.css}" />
+</head>
 
-    <div class="container-fluid px-4 py-4">
+<body>
+  <div th:replace="~{fragments/navbarAdmin :: navbar}"></div>
 
-      <!-- ENCABEZADO -->
-      <div class="title-section px-0 mb-4">
-        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
-          <div>
-            <h2 class="mb-0" th:text="#{material.page.title}">Material de Estudio</h2>
-            <p class="text-muted mb-0" th:text="#{material.subtitle}">Gestiona el material semanal por institución</p>
-          </div>
-          <button class="btn btn-create text-white" data-bs-toggle="modal" data-bs-target="#modalSubirMaterial">
-            <i class="bi bi-upload me-1"></i> <span th:text="#{material.upload.btn}">Subir Material</span>
-          </button>
+  <div class="container-fluid px-4 py-4">
+
+    <!-- ENCABEZADO -->
+    <div class="title-section px-0 mb-4">
+      <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+        <div>
+          <h2 class="mb-0" th:text="#{material.page.title}">Material de Estudio</h2>
+          <p class="text-muted mb-0" th:text="#{material.subtitle}">Gestiona el material semanal por institución</p>
         </div>
+        <button class="btn btn-create text-white" data-bs-toggle="modal" data-bs-target="#modalSubirMaterial">
+          <i class="bi bi-upload me-1" aria-hidden="true"></i> <span th:text="#{material.upload.btn}">Subir
+            Material</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ALERTAS -->
+    <div th:if="${exitoMaterial}" class="alert alert-success alert-dismissible fade show" role="alert">
+      <i class="bi bi-check-circle me-2" aria-hidden="true"></i>
+      <span th:text="${exitoMaterial}"></span>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar alerta"></button>
+    </div>
+    <div th:if="${errorMaterial}" class="alert alert-danger alert-dismissible fade show" role="alert">
+      <i class="bi bi-exclamation-triangle me-2" aria-hidden="true"></i>
+      <span th:text="${errorMaterial}"></span>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar alerta"></button>
+    </div>
+
+    <!-- FILTRO POR INSTITUCIÓN -->
+    <div class="table-card mb-4">
+      <form th:action="@{/admin/AdminMaterial}" method="get" class="d-flex align-items-center gap-3 flex-wrap">
+        <label for="institucionId" class="fw-semibold text-muted mb-0"
+          th:text="#{form.institution}">Institución:</label>
+        <select id="institucionId" name="institucionId" class="form-select" style="max-width: 300px;"
+          onchange="this.form.submit()" aria-describedby="filtroInstitucionHelp">
+          <option value="" th:text="#{material.filter.select}">-- Selecciona una institución --</option>
+          <option th:each="inst : ${instituciones}" th:value="${inst.id}" th:text="${inst.nombre}"
+            th:selected="${inst.id == institucionSeleccionada}">
+          </option>
+        </select>
+        <div id="filtroInstitucionHelp" class="visually-hidden">Selecciona una institución para filtrar materiales</div>
+      </form>
+    </div>
+
+    <!-- TABLA DE MATERIALES -->
+    <div class="table-card">
+      <div th:if="${materiales == null or materiales.isEmpty()}" class="text-center py-5 text-muted">
+        <i class="bi bi-folder2-open display-4" aria-hidden="true"></i>
+        <p class="mt-3">
+          <span th:if="${institucionSeleccionada == null}" th:text="#{material.empty.select}">Selecciona una institución
+            para ver los materiales.</span>
+          <span th:if="${institucionSeleccionada != null}" th:text="#{material.empty.none}">No hay materiales subidos
+            para esta institución.</span>
+        </p>
       </div>
 
-      <!-- ALERTAS -->
-      <div th:if="${exitoMaterial}" class="alert alert-success alert-dismissible fade show" role="alert">
-        <i class="bi bi-check-circle me-2"></i>
-        <span th:text="${exitoMaterial}"></span>
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      <div th:if="${materiales != null and !materiales.isEmpty()}">
+        <table class="table table-hover align-middle mb-0" aria-label="Lista de materiales de estudio">
+          <thead>
+            <tr>
+              <th scope="col" th:text="#{material.col.week}">Semana</th>
+              <th scope="col" th:text="#{material.col.title}">Título</th>
+              <th scope="col" th:text="#{material.col.desc}">Descripción</th>
+              <th scope="col" th:text="#{material.col.date}">Fecha de subida</th>
+              <th scope="col" th:text="#{material.col.file}">Archivo</th>
+              <th scope="col" class="text-center" th:text="#{material.col.action}">Acción</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="mat : ${materiales}">
+              <td>
+                <span class="badge bg-primary"><span th:text="#{material.week.prefix}">Semana</span> <span
+                    th:text="${mat.semana}"></span></span>
+              </td>
+              <td class="fw-semibold" th:text="${mat.titulo}"></td>
+              <td class="text-muted"
+                style="max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"
+                th:text="${mat.descripcion}"></td>
+              <td th:text="${#temporals.format(mat.fechaSubida, 'dd/MM/yyyy')}"></td>
+              <td>
+                <span class="badge bg-secondary">
+                  <i class="bi bi-file-earmark me-1" aria-hidden="true"></i>
+                  <span th:text="${mat.nombreArchivo}"></span>
+                </span>
+              </td>
+              <td class="text-center">
+                <div class="action-buttons">
+                  <a th:href="@{/admin/descargarMaterial/{id}(id=${mat.id})}" class="btn-action btn-edit"
+                    aria-label="Descargar archivo">
+                    <i class="bi bi-download" aria-hidden="true"></i>
+                    <span th:text="#{btn.download}">Descargar</span>
+                  </a>
+                  <a th:href="@{/admin/eliminarMaterial/{id}(id=${mat.id}, institucionId=${institucionSeleccionada})}"
+                    class="btn-action btn-delete" th:data-confirm="#{material.confirm.delete}"
+                    onclick="return confirm(this.getAttribute('data-confirm'))" aria-label="Eliminar archivo">
+                    <i class="bi bi-trash" aria-hidden="true"></i>
+                    <span th:text="#{btn.delete}">Eliminar</span>
+                  </a>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-      <div th:if="${errorMaterial}" class="alert alert-danger alert-dismissible fade show" role="alert">
-        <i class="bi bi-exclamation-triangle me-2"></i>
-        <span th:text="${errorMaterial}"></span>
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-      </div>
+    </div>
 
-      <!-- FILTRO POR INSTITUCIÓN -->
-      <div class="table-card mb-4">
-        <form th:action="@{/admin/AdminMaterial}" method="get" class="d-flex align-items-center gap-3 flex-wrap">
-          <label class="fw-semibold text-muted mb-0" th:text="#{form.institution}">Institución:</label>
-          <select name="institucionId" class="form-select" style="max-width: 300px;"
-                  onchange="this.form.submit()">
-            <option value="" th:text="#{material.filter.select}">-- Selecciona una institución --</option>
-            <option th:each="inst : ${instituciones}"
-                    th:value="${inst.id}"
-                    th:text="${inst.nombre}"
-                    th:selected="${inst.id == institucionSeleccionada}">
-            </option>
-          </select>
+  </div>
+
+  <!-- MODAL SUBIR MATERIAL -->
+  <div class="modal fade" id="modalSubirMaterial" tabindex="-1" aria-labelledby="modalSubirLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalSubirLabel">
+            <i class="bi bi-upload me-2" aria-hidden="true"></i><span th:text="#{material.modal.title}">Subir Material
+              de Estudio</span>
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar diálogo"></button>
+        </div>
+        <form th:action="@{/admin/subirMaterial}" method="post" enctype="multipart/form-data">
+          <div class="modal-body">
+            <div class="mb-3">
+              <label class="form-label fw-semibold" for="institucionSelectId"
+                th:text="#{form.institution}">Institución</label>
+              <select id="institucionSelectId" name="institucionId" class="form-select" required
+                aria-describedby="institucionSelectHelp">
+                <option value="" th:text="#{material.modal.select}">-- Selecciona --</option>
+                <option th:each="inst : ${instituciones}" th:value="${inst.id}" th:text="${inst.nombre}"
+                  th:selected="${inst.id == institucionSeleccionada}">
+                </option>
+              </select>
+              <div id="institucionSelectHelp" class="visually-hidden">Selecciona la institución para subir material
+              </div>
+            </div>
+            <div class="row g-3">
+              <div class="col-md-8">
+                <label class="form-label fw-semibold" for="tituloInput"
+                  th:text="#{material.modal.title.label}">Título</label>
+                <input type="text" id="tituloInput" name="titulo" class="form-control"
+                  th:placeholder="#{material.modal.title.placeholder}" required />
+              </div>
+              <div class="col-md-4">
+                <label class="form-label fw-semibold" for="semanaInput" th:text="#{form.week}">Semana</label>
+                <input type="number" id="semanaInput" name="semana" class="form-control" min="1"
+                  th:placeholder="#{material.modal.week.placeholder}" required />
+              </div>
+            </div>
+            <div class="mb-3 mt-3">
+              <label class="form-label fw-semibold" for="descripcionInput"
+                th:text="#{form.description}">Descripción</label>
+              <textarea id="descripcionInput" name="descripcion" class="form-control" rows="3"
+                th:placeholder="#{material.modal.desc.placeholder}" required></textarea>
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-semibold" for="archivoInput">Archivo</label>
+              <input type="file" id="archivoInput" name="archivo" class="form-control" required
+                aria-describedby="archivoHelp" />
+              <div id="archivoHelp" class="form-text" th:text="#{material.modal.file.hint}">PDF, Word, imágenes u otros
+                formatos de estudio.</div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+              th:text="#{btn.cancel}">Cancelar</button>
+            <button type="submit" class="btn btn-create text-white">
+              <i class="bi bi-upload me-1" aria-hidden="true"></i><span th:text="#{btn.upload}">Subir</span>
+            </button>
+          </div>
         </form>
       </div>
-
-      <!-- TABLA DE MATERIALES -->
-      <div class="table-card">
-        <div th:if="${materiales == null or materiales.isEmpty()}" class="text-center py-5 text-muted">
-          <i class="bi bi-folder2-open display-4"></i>
-          <p class="mt-3">
-            <span th:if="${institucionSeleccionada == null}" th:text="#{material.empty.select}">Selecciona una institución para ver los materiales.</span>
-            <span th:if="${institucionSeleccionada != null}" th:text="#{material.empty.none}">No hay materiales subidos para esta institución.</span>
-          </p>
-        </div>
-
-        <div th:if="${materiales != null and !materiales.isEmpty()}">
-          <table class="table table-hover align-middle mb-0">
-            <thead>
-              <tr>
-                <th th:text="#{material.col.week}">Semana</th>
-                <th th:text="#{material.col.title}">Título</th>
-                <th th:text="#{material.col.desc}">Descripción</th>
-                <th th:text="#{material.col.date}">Fecha de subida</th>
-                <th th:text="#{material.col.file}">Archivo</th>
-                <th class="text-center" th:text="#{material.col.action}">Acción</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr th:each="mat : ${materiales}">
-                <td>
-                  <span class="badge bg-primary"><span th:text="#{material.week.prefix}">Semana</span> <span th:text="${mat.semana}"></span></span>
-                </td>
-                <td class="fw-semibold" th:text="${mat.titulo}"></td>
-                <td class="text-muted" style="max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"
-                    th:text="${mat.descripcion}"></td>
-                <td th:text="${#temporals.format(mat.fechaSubida, 'dd/MM/yyyy')}"></td>
-                <td>
-                  <span class="badge bg-secondary">
-                    <i class="bi bi-file-earmark me-1"></i>
-                    <span th:text="${mat.nombreArchivo}"></span>
-                  </span>
-                </td>
-                <td class="text-center">
-                  <div class="action-buttons">
-                    <a th:href="@{/admin/descargarMaterial/{id}(id=${mat.id})}"
-                       class="btn-action btn-edit">
-                      <i class="bi bi-download"></i>
-                      <span th:text="#{btn.download}">Descargar</span>
-                    </a>
-                    <a th:href="@{/admin/eliminarMaterial/{id}(id=${mat.id}, institucionId=${institucionSeleccionada})}"
-                       class="btn-action btn-delete"
-                       th:data-confirm="#{material.confirm.delete}"
-                       onclick="return confirm(this.getAttribute('data-confirm'))">
-                      <i class="bi bi-trash"></i>
-                      <span th:text="#{btn.delete}">Eliminar</span>
-                    </a>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
     </div>
+  </div>
 
-    <!-- MODAL SUBIR MATERIAL -->
-    <div class="modal fade" id="modalSubirMaterial" tabindex="-1" aria-labelledby="modalSubirLabel" aria-hidden="true">
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="modalSubirLabel">
-              <i class="bi bi-upload me-2"></i><span th:text="#{material.modal.title}">Subir Material de Estudio</span>
-            </h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-          </div>
-          <form th:action="@{/admin/subirMaterial}" method="post" enctype="multipart/form-data">
-            <div class="modal-body">
-              <div class="mb-3">
-                <label class="form-label fw-semibold" th:text="#{form.institution}">Institución</label>
-                <select name="institucionId" class="form-select" required>
-                  <option value="" th:text="#{material.modal.select}">-- Selecciona --</option>
-                  <option th:each="inst : ${instituciones}"
-                          th:value="${inst.id}"
-                          th:text="${inst.nombre}"
-                          th:selected="${inst.id == institucionSeleccionada}">
-                  </option>
-                </select>
-              </div>
-              <div class="row g-3">
-                <div class="col-md-8">
-                  <label class="form-label fw-semibold" th:text="#{material.modal.title.label}">Título</label>
-                  <input type="text" name="titulo" class="form-control" th:placeholder="#{material.modal.title.placeholder}" required />
-                </div>
-                <div class="col-md-4">
-                  <label class="form-label fw-semibold" th:text="#{form.week}">Semana</label>
-                  <input type="number" name="semana" class="form-control" min="1" th:placeholder="#{material.modal.week.placeholder}" required />
-                </div>
-              </div>
-              <div class="mb-3 mt-3">
-                <label class="form-label fw-semibold" th:text="#{form.description}">Descripción</label>
-                <textarea name="descripcion" class="form-control" rows="3"
-                          th:placeholder="#{material.modal.desc.placeholder}" required></textarea>
-              </div>
-              <div class="mb-3">
-                <label class="form-label fw-semibold">Archivo</label>
-                <input type="file" name="archivo" class="form-control" required />
-                <div class="form-text" th:text="#{material.modal.file.hint}">PDF, Word, imágenes u otros formatos de estudio.</div>
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" th:text="#{btn.cancel}">Cancelar</button>
-              <button type="submit" class="btn btn-create text-white">
-                <i class="bi bi-upload me-1"></i><span th:text="#{btn.upload}">Subir</span>
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  </body>
 </html>

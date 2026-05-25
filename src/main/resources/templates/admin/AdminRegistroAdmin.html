@@ -27,14 +27,14 @@
       <h4 class="mb-4" th:text="#{register.coordinator.title}">Registro de Coordinadores</h4>
 
       <div th:if="${param.exito}">
-        <div class="alert alert-success">
-          <i class="bi bi-check-circle-fill"></i>
+        <div class="alert alert-success" role="alert">
+          <i class="bi bi-check-circle-fill" aria-hidden="true"></i>
           <span th:text="#{register.coordinator.success}">Coordinador registrado exitosamente</span>
         </div>
       </div>
       <div th:if="${param.error}">
-        <div class="alert alert-danger">
-          <i class="bi bi-exclamation-triangle-fill"></i>
+        <div class="alert alert-danger" role="alert">
+          <i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i>
           <span th:text="#{register.coordinator.error}">Nombre de usuario inválido o ya en uso</span>
         </div>
       </div>
@@ -43,36 +43,37 @@
         <div class="row">
           <!-- NOMBRE DE USUARIO -->
           <div class="col-md-6 mb-3">
-            <label class="form-label" th:text="#{register.admin.username}">Nombre de Usuario</label>
-            <input type="text" class="form-control" th:field="*{username}" required autofocus />
+            <label class="form-label" for="username" th:text="#{register.admin.username}">Nombre de Usuario</label>
+            <input type="text" id="username" class="form-control" th:field="*{username}" required autofocus />
           </div>
 
           <!-- CONTRASEÑA -->
           <div class="col-md-6 mb-3">
-            <label class="form-label" th:text="#{register.admin.password}">Contraseña</label>
-            <input type="password" class="form-control" th:field="*{password}" required />
+            <label class="form-label" for="password" th:text="#{register.admin.password}">Contraseña</label>
+            <input type="password" id="password" class="form-control" th:field="*{password}" required />
           </div>
 
           <!-- INSTITUCIÓN -->
           <div class="col-md-12 mb-3">
-            <label class="form-label" th:text="#{form.institution}">Institución</label>
-            <select class="form-select" th:field="*{institucionId}">
-              <option value="" th:text="#{form.select}">Seleccione...</option>
+            <label class="form-label" for="institucionId" th:text="#{form.institution}">Institución</label>
+            <select id="institucionId" class="form-select" th:field="*{institucionId}" aria-describedby="errorInstitucion">
+              <option value="" disabled th:text="#{form.select}">Seleccione...</option>
               <option th:each="inst : ${instituciones}"
                       th:value="${inst.id}"
                       th:text="${inst.nombre}">
               </option>
             </select>
+            <div id="errorInstitucion" class="error"></div>
           </div>
         </div>
 
         <button type="submit" class="btn btn-main text-white mt-3">
-          <i class="bi bi-person-plus-fill me-1"></i>
+          <i class="bi bi-person-plus-fill me-1" aria-hidden="true"></i>
           <span th:text="#{register.coordinator.btn}">Registrar Coordinador</span>
         </button>
 
         <a class="btn btn-outline-secondary mt-3" th:href="@{/admin/configuracion}">
-          <i class="bi bi-arrow-left-circle me-1"></i><span th:text="#{btn.back}">Volver</span>
+          <i class="bi bi-arrow-left-circle me-1" aria-hidden="true"></i><span th:text="#{btn.back}">Volver</span>
         </a>
       </form>
     </div>
