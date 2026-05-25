@@ -210,9 +210,9 @@
                   <input type="hidden" name="documentoIdentidad" th:value="${est.documentoIdentidad}" />
 
                   <div class="mb-3">
-                    <label for="simulacroSelect" class="form-label"
+                    <label th:for="'simulacroSelect-' + ${est.documentoIdentidad}" class="form-label"
                       th:text="#{students.modal.simulacro}">Simulacro</label>
-                    <select id="simulacroSelect" name="simulacroId" class="form-select" required>
+                    <select th:id="'simulacroSelect-' + ${est.documentoIdentidad}" name="simulacroId" class="form-select" required>
                       <option th:each="sim : ${simulacros}" th:value="${sim.id}" th:text="${sim.titulo}"></option>
                     </select>
                   </div>
@@ -263,15 +263,15 @@
 
                   <p class="fw-semibold mb-2" th:text="#{students.modal.position}">Posición en el salón</p>
                   <div class="mb-3">
-                    <label for="puestoSalonInput" class="form-label form-label-sm mb-1"
+                    <label th:for="'puestoSalonInput-' + ${est.documentoIdentidad}" class="form-label form-label-sm mb-1"
                       th:text="#{students.modal.position.label}">Puesto</label>
-                    <input type="number" id="puestoSalonInput" name="puestoSalon" min="1"
+                    <input type="number" th:id="'puestoSalonInput-' + ${est.documentoIdentidad}" name="puestoSalon" min="1"
                       class="form-control form-control-sm" required />
                   </div>
 
                   <div class="mb-3">
-                    <label for="archivoInput" class="form-label" th:text="#{students.modal.pdf}">Archivo PDF</label>
-                    <input type="file" id="archivoInput" class="form-control" name="archivo" accept="application/pdf"
+                    <label th:for="'archivoInput-' + ${est.documentoIdentidad}" class="form-label" th:text="#{students.modal.pdf}">Archivo PDF</label>
+                    <input type="file" th:id="'archivoInput-' + ${est.documentoIdentidad}" class="form-control" name="archivo" accept="application/pdf"
                       required />
                   </div>
 

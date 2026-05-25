@@ -39,52 +39,55 @@
             <!-- Alertas contraseña -->
             <div th:if="${exitoPassword}"
                  class="alert alert-success alert-dismissible fade show py-2" role="alert">
-              <i class="bi bi-check-circle me-1"></i>
+              <i class="bi bi-check-circle me-1" aria-hidden="true"></i>
               <span th:text="${exitoPassword}"></span>
-              <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar alerta"></button>
             </div>
             <div th:if="${errorPassword}"
                  class="alert alert-danger alert-dismissible fade show py-2" role="alert">
-              <i class="bi bi-exclamation-triangle me-1"></i>
+              <i class="bi bi-exclamation-triangle me-1" aria-hidden="true"></i>
               <span th:text="${errorPassword}"></span>
-              <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar alerta"></button>
             </div>
 
             <form th:action="@{/admin/configuracion/cambiarPassword}" method="post" id="formPassword">
               <input type="hidden" name="id" th:value="${adminActual.id}" />
 
               <div class="mb-3">
-                <label class="form-label fw-semibold" th:text="#{form.password.current}">Contraseña actual</label>
+                <label class="form-label fw-semibold" for="passwordActual" th:text="#{form.password.current}">Contraseña actual</label>
                 <div class="input-group">
                   <input type="password" name="passwordActual" id="passwordActual"
                          class="form-control" required />
                   <button class="btn btn-outline-secondary" type="button"
-                          onclick="toggleVer('passwordActual', this)">
-                    <i class="bi bi-eye"></i>
+                          onclick="toggleVer('passwordActual', this)"
+                          th:aria-label="#{btn.toggle.password}">
+                    <i class="bi bi-eye" aria-hidden="true"></i>
                   </button>
                 </div>
               </div>
 
               <div class="mb-3">
-                <label class="form-label fw-semibold" th:text="#{form.password.new}">Nueva contraseña</label>
+                <label class="form-label fw-semibold" for="passwordNueva" th:text="#{form.password.new}">Nueva contraseña</label>
                 <div class="input-group">
                   <input type="password" name="passwordNueva" id="passwordNueva"
                          class="form-control" required minlength="6" />
                   <button class="btn btn-outline-secondary" type="button"
-                          onclick="toggleVer('passwordNueva', this)">
-                    <i class="bi bi-eye"></i>
+                          onclick="toggleVer('passwordNueva', this)"
+                          th:aria-label="#{btn.toggle.password}">
+                    <i class="bi bi-eye" aria-hidden="true"></i>
                   </button>
                 </div>
               </div>
 
               <div class="mb-4">
-                <label class="form-label fw-semibold" th:text="#{form.password.confirm}">Confirmar contraseña</label>
+                <label class="form-label fw-semibold" for="confirmarPassword" th:text="#{form.password.confirm}">Confirmar contraseña</label>
                 <div class="input-group">
                   <input type="password" name="confirmarPassword" id="confirmarPassword"
                          class="form-control" required minlength="6" />
                   <button class="btn btn-outline-secondary" type="button"
-                          onclick="toggleVer('confirmarPassword', this)">
-                    <i class="bi bi-eye"></i>
+                          onclick="toggleVer('confirmarPassword', this)"
+                          th:aria-label="#{btn.toggle.password}">
+                    <i class="bi bi-eye" aria-hidden="true"></i>
                   </button>
                 </div>
                 <div id="msgConfirmar" class="form-text text-danger d-none"
@@ -123,22 +126,22 @@
             <!-- Alertas usuarios -->
             <div th:if="${exitoUsuarios}"
                  class="alert alert-success alert-dismissible fade show py-2" role="alert">
-              <i class="bi bi-check-circle me-1"></i>
+              <i class="bi bi-check-circle me-1" aria-hidden="true"></i>
               <span th:text="${exitoUsuarios}"></span>
-              <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar alerta"></button>
             </div>
             <div th:if="${errorUsuarios}"
                  class="alert alert-danger alert-dismissible fade show py-2" role="alert">
-              <i class="bi bi-exclamation-triangle me-1"></i>
+              <i class="bi bi-exclamation-triangle me-1" aria-hidden="true"></i>
               <span th:text="${errorUsuarios}"></span>
-              <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar alerta"></button>
             </div>
 
             <!-- FILTROS -->
             <div class="row g-2 mb-3">
               <div class="col-sm-6">
-                <label class="form-label fw-semibold small text-muted mb-1">
-                  <i class="bi bi-shield me-1"></i><span th:text="#{config.filter.role}">Filtrar por rol</span>
+                <label class="form-label fw-semibold small text-muted mb-1" for="filtroRol">
+                  <i class="bi bi-shield me-1" aria-hidden="true"></i><span th:text="#{config.filter.role}">Filtrar por rol</span>
                 </label>
                 <select id="filtroRol" class="form-select form-select-sm">
                   <option value="" th:text="#{config.filter.all.roles}">— Todos los roles —</option>
@@ -148,8 +151,8 @@
                 </select>
               </div>
               <div class="col-sm-6">
-                <label class="form-label fw-semibold small text-muted mb-1">
-                  <i class="bi bi-building me-1"></i><span th:text="#{config.filter.institution}">Filtrar por institución</span>
+                <label class="form-label fw-semibold small text-muted mb-1" for="filtroInstitucion">
+                  <i class="bi bi-building me-1" aria-hidden="true"></i><span th:text="#{config.filter.institution}">Filtrar por institución</span>
                 </label>
                 <select id="filtroInstitucion" class="form-select form-select-sm">
                   <option value="" th:text="#{config.filter.all.institutions}">— Todas las instituciones —</option>
@@ -207,8 +210,9 @@
                     <td class="text-center">
                       <div class="dropdown">
                         <button class="btn btn-action btn-acciones dropdown-toggle"
-                                type="button" data-bs-toggle="dropdown">
-                          <i class="bi bi-grid-3x3-gap-fill"></i>
+                                type="button" data-bs-toggle="dropdown" aria-expanded="false"
+                                aria-label="Opciones de acciones">
+                          <i class="bi bi-grid-3x3-gap-fill" aria-hidden="true"></i>
                           <span th:text="#{btn.actions}">Acciones</span>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end shadow">
@@ -297,9 +301,9 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title">
-              <i class="bi bi-shield-lock me-2"></i><span th:text="#{config.action.change.password}">Cambiar contraseña</span>
+              <i class="bi bi-shield-lock me-2" aria-hidden="true"></i><span th:text="#{config.action.change.password}">Cambiar contraseña</span>
             </h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar diálogo"></button>
           </div>
           <form th:action="@{/admin/configuracion/cambiarPasswordUsuario}" method="post" id="formCambioAdmin">
             <div class="modal-body">
@@ -310,27 +314,29 @@
               <input type="hidden" name="id" id="modalUserId" />
 
               <div class="mb-3">
-                <label class="form-label fw-semibold" th:text="#{form.password.new}">Nueva contraseña</label>
+                <label class="form-label fw-semibold" for="modalNueva" th:text="#{form.password.new}">Nueva contraseña</label>
                 <div class="input-group">
                   <input type="password" name="passwordNueva" id="modalNueva"
                          class="form-control" required minlength="6"
                          th:placeholder="#{form.password.min}" />
                   <button class="btn btn-outline-secondary" type="button"
-                          onclick="toggleVer('modalNueva', this)">
-                    <i class="bi bi-eye"></i>
+                          onclick="toggleVer('modalNueva', this)"
+                          th:aria-label="#{btn.toggle.password}">
+                    <i class="bi bi-eye" aria-hidden="true"></i>
                   </button>
                 </div>
               </div>
 
               <div class="mb-2">
-                <label class="form-label fw-semibold" th:text="#{form.password.confirm}">Confirmar contraseña</label>
+                <label class="form-label fw-semibold" for="modalConfirmar" th:text="#{form.password.confirm}">Confirmar contraseña</label>
                 <div class="input-group">
                   <input type="password" name="confirmarPassword" id="modalConfirmar"
                          class="form-control" required minlength="6"
                          th:placeholder="#{form.password.repeat}" />
                   <button class="btn btn-outline-secondary" type="button"
-                          onclick="toggleVer('modalConfirmar', this)">
-                    <i class="bi bi-eye"></i>
+                          onclick="toggleVer('modalConfirmar', this)"
+                          th:aria-label="#{btn.toggle.password}">
+                    <i class="bi bi-eye" aria-hidden="true"></i>
                   </button>
                 </div>
                 <div id="msgModalConfirmar" class="form-text text-danger d-none"

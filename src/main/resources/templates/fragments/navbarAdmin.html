@@ -17,8 +17,9 @@
         <!-- TOGGLER MOBILE -->
         <button class="nav-admin-toggler navbar-toggler" type="button"
                 data-bs-toggle="collapse" data-bs-target="#navAdminCollapse"
-                aria-controls="navAdminCollapse" aria-expanded="false">
-          <i class="bi bi-list text-white fs-4"></i>
+                aria-controls="navAdminCollapse" aria-expanded="false"
+                aria-label="Abrir menú de navegación">
+          <i class="bi bi-list text-white fs-4" aria-hidden="true"></i>
         </button>
 
         <!-- LINKS + USUARIO -->
@@ -67,8 +68,8 @@
               <span class="nav-admin-username"
                     sec:authentication="principal.username"></span>
             </div>
-            <a th:href="@{/admin/configuracion}" class="nav-admin-settings" th:title="#{nav.config}">
-              <i class="bi bi-gear-fill"></i>
+            <a th:href="@{/admin/configuracion}" class="nav-admin-settings" th:title="#{nav.config}" th:aria-label="#{nav.config}">
+              <i class="bi bi-gear-fill" aria-hidden="true"></i>
             </a>
             <!-- LANGUAGE SWITCHER -->
             <div class="dropdown">

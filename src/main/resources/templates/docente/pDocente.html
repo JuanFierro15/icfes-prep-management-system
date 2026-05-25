@@ -99,7 +99,8 @@
                    th:style="'width: ' + ${progresoCurso} + '%'"
                    th:attr="aria-valuenow=${progresoCurso}"
                    aria-valuemin="0"
-                   aria-valuemax="100"></div>
+                   aria-valuemax="100"
+                   th:aria-label="#{teacher.progress.title}"></div>
             </div>
             <div class="d-flex justify-content-between">
               <small class="text-muted" th:text="|${progresoCurso}#{teacher.progress.completed}|"></small>
