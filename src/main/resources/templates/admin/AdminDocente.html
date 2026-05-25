@@ -30,6 +30,16 @@
     </div>
 
     <div class="container mb-5">
+      <div th:if="${exitoDocente}" class="alert alert-success alert-dismissible fade show mb-3" role="alert">
+        <i class="bi bi-check-circle-fill" aria-hidden="true"></i>
+        <span th:text="${exitoDocente}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar alerta"></button>
+      </div>
+      <div th:if="${errorDocente}" class="alert alert-danger alert-dismissible fade show mb-3" role="alert">
+        <i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i>
+        <span th:text="${errorDocente}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar alerta"></button>
+      </div>
       <div class="table-card">
         <div class="table-responsive"
              th:if="${docentes != null and !docentes.isEmpty()}">
