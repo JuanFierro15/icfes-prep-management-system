@@ -163,4 +163,4 @@ Las contraseñas se almacenan con BCrypt.
 
 ## Equipo de desarrollo
 
-Proyecto académico desarrollado para la asignatura de Ingeniería de Software — Universidad Surcolombiana (USCO).
+Proyecto académico desarrollado para la asignatura de Programación Web — Universidad Surcolombiana (USCO).
