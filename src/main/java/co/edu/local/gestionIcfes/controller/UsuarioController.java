@@ -4,9 +4,12 @@ package co.edu.local.gestionIcfes.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import jakarta.validation.Valid;
 
 import co.edu.local.gestionIcfes.dto.PersonaDTO;
 import co.edu.local.gestionIcfes.dto.UsuarioDTO;
@@ -89,7 +92,15 @@ public class UsuarioController {
 	}
 	
 	@PostMapping("/registro")
-	public String registrarUsuario(@ModelAttribute("persona") PersonaDTO personaDTO) {
+	public String registrarUsuario(@Valid @ModelAttribute("persona") PersonaDTO personaDTO,
+			BindingResult result, Model model) {
+		if (result.hasErrors()) {
+			model.addAttribute("tiposIdentificaciones", TipoIdentificacion.values());
+			model.addAttribute("instituciones", institucionService.listarInstituciones());
+			return (personaDTO.getRol() != null && personaDTO.getRol() == 2)
+					? "admin/AdminRegistroDocente"
+					: "admin/AdminRegistroEstudiante";
+		}
 		if (personaDTO.getRol() == 2) {
 			if (usuarioServicio.existeDocumentoDocente(personaDTO.getDocumentoIdentidad()))
 				return "redirect:/registroDocente?errorDocumento";
