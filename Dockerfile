@@ -12,6 +12,13 @@ RUN mvn clean package -DskipTests -q
 # ── Etapa 2: imagen final ─────────────────────────────────────────────────────
 FROM eclipse-temurin:21-jre-alpine
 
+RUN apk add --no-cache musl-locales musl-locales-lang && \
+    echo "es_ES.UTF-8 UTF-8" >> /etc/locale.gen
+
+ENV LANG=es_ES.UTF-8
+ENV LC_ALL=es_ES.UTF-8
+ENV JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF-8 -Dstdout.encoding=UTF-8"
+
 WORKDIR /app
 
 COPY --from=builder /app/target/GestionIcfes-1.0.jar app.jar
