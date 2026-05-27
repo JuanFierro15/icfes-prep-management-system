@@ -15,6 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import jakarta.validation.Valid;
 
 import co.edu.local.gestionIcfes.dto.PersonaDTO;
 import co.edu.local.gestionIcfes.enums.EstadoAsistencia;
@@ -267,7 +270,13 @@ public class AdminController {
     }
 
     @PostMapping("/modificar")
-    public String registrarUsuario(@ModelAttribute("persona") PersonaDTO personaDTO) {
+    public String registrarUsuario(@Valid @ModelAttribute("persona") PersonaDTO personaDTO,
+            BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("tiposIdentificaciones", TipoIdentificacion.values());
+            model.addAttribute("instituciones", institucionService.listarInstituciones());
+            return "admin/AdminActualizar";
+        }
         boolean exito = false;
         if (personaDTO.getRol() == 2) {
             exito = (docenteService.actualizarDocente(personaDTO) == null) ? false : true;

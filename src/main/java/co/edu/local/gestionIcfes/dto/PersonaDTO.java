@@ -3,6 +3,8 @@ package co.edu.local.gestionIcfes.dto;
 import co.edu.local.gestionIcfes.enums.TipoIdentificacion;
 import co.edu.local.gestionIcfes.model.Institucion;
 import co.edu.local.gestionIcfes.model.Rol;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,12 +31,30 @@ public class PersonaDTO {
 
 	private TipoIdentificacion tipoIdentificacion;
 
+	@NotBlank(message = "El primer nombre es obligatorio")
+	@Pattern(
+		regexp = "^[A-Za-záéíóúÁÉÍÓÚüÜñÑ]+(\\s[A-Za-záéíóúÁÉÍÓÚüÜñÑ]+)*$",
+		message = "Solo se permiten letras y tildes. Sin números ni caracteres especiales."
+	)
 	private String primerNombre;
 
+	@Pattern(
+		regexp = "^([A-Za-záéíóúÁÉÍÓÚüÜñÑ]+(\\s[A-Za-záéíóúÁÉÍÓÚüÜñÑ]+)*)?$",
+		message = "Solo se permiten letras y tildes. Sin números ni caracteres especiales."
+	)
 	private String segundoNombre;
 
+	@NotBlank(message = "El primer apellido es obligatorio")
+	@Pattern(
+		regexp = "^[A-Za-záéíóúÁÉÍÓÚüÜñÑ]+(\\s[A-Za-záéíóúÁÉÍÓÚüÜñÑ]+)*$",
+		message = "Solo se permiten letras y tildes. Sin números ni caracteres especiales."
+	)
 	private String primerApellido;
 
+	@Pattern(
+		regexp = "^([A-Za-záéíóúÁÉÍÓÚüÜñÑ]+(\\s[A-Za-záéíóúÁÉÍÓÚüÜñÑ]+)*)?$",
+		message = "Solo se permiten letras y tildes. Sin números ni caracteres especiales."
+	)
 	private String segundoApellido;
 
 	private String celular;
