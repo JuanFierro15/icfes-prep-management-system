@@ -1,2 +1,32 @@
-/mvnw text eol=lf
-*.cmd text eol=crlf
+# Normaliza finales de línea: LF en el repo, autoconversión al checkout según SO
+* text=auto eol=lf
+
+# Scripts que requieren un final de línea concreto
+*.sh   text eol=lf
+mvnw   text eol=lf
+*.cmd  text eol=crlf
+*.bat  text eol=crlf
+
+# Código y recursos de texto (explícito para evitar ambigüedad)
+*.java       text
+*.html       text
+*.css        text
+*.js         text
+*.xml        text
+*.yml        text
+*.yaml       text
+*.properties text
+*.md         text
+
+# Binarios: sin conversión de EOL ni diff textual
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.gif  binary
+*.ico  binary
+*.pdf  binary
+*.jar  binary
+*.woff  binary
+*.woff2 binary
+*.ttf  binary
+*.eot  binary
