@@ -1,0 +1,39 @@
+# Control de versiones
+.git
+.gitignore
+.gitattributes
+
+# Build local (la imagen compila dentro del contenedor)
+target/
+build/
+
+# IDE / editor
+.idea/
+.vscode/
+*.iml
+.settings/
+.classpath
+.project
+.editorconfig
+
+# Documentación y recursos que no afectan al build
+docs/
+*.md
+!README.md
+
+# CI / infra
+.github/
+
+# Variables de entorno y secretos
+.env
+.env.*
+
+# Artefactos del SO
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Asistentes de IA
+CLAUDE.md
+CLAUDE.local.md
+.claude/
