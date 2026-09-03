@@ -1,10 +1,14 @@
-HELP.md
+# ─── Build / artefactos Maven ────────────────────────────────────────────────
 target/
-.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+*.class
+HELP.md
 
-### STS ###
+# ─── Maven wrapper ──────────────────────────────────────────────────────────
+.mvn/wrapper/maven-wrapper.jar
+
+# ─── Eclipse / STS ──────────────────────────────────────────────────────────
 .apt_generated
 .classpath
 .factorypath
@@ -13,13 +17,13 @@ target/
 .springBeans
 .sts4-cache
 
-### IntelliJ IDEA ###
+# ─── IntelliJ IDEA ──────────────────────────────────────────────────────────
 .idea
 *.iws
 *.iml
 *.ipr
 
-### NetBeans ###
+# ─── NetBeans ───────────────────────────────────────────────────────────────
 /nbproject/private/
 /nbbuild/
 /dist/
@@ -29,12 +33,31 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
-### VS Code ###
+# ─── VS Code ────────────────────────────────────────────────────────────────
 .vscode/
 
-### JavaDoc ###
+# ─── JavaDoc ────────────────────────────────────────────────────────────────
 doc/
 
-### Claude ###
+# ─── Variables de entorno / secretos ────────────────────────────────────────
+.env
+.env.*
+!.env.example
+
+# ─── Logs ───────────────────────────────────────────────────────────────────
+*.log
+logs/
+
+# ─── Artefactos del sistema operativo ───────────────────────────────────────
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# ─── Asistentes de IA / Claude Code ─────────────────────────────────────────
 CLAUDE.md
+CLAUDE.local.md
 .claude/
