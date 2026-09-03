@@ -12,19 +12,27 @@
 	<artifactId>GestionIcfes</artifactId>
 	<version>1.0</version>
 	<name>GestionIcfes</name>
-	<description>Proyecto Educativo</description>
-	<url/>
+	<description>Sistema web de gestión académica para institutos de preparación al examen ICFES: estudiantes, docentes, simulacros, asistencias y materiales con control de acceso por roles.</description>
+	<url>https://github.com/JuanFierro15/icfes-prep-management-system</url>
 	<licenses>
-		<license/>
+		<license>
+			<name>MIT License</name>
+			<url>https://opensource.org/licenses/MIT</url>
+			<distribution>repo</distribution>
+		</license>
 	</licenses>
 	<developers>
-		<developer/>
+		<developer>
+			<id>JuanFierro15</id>
+			<name>Juan Fierro</name>
+			<url>https://github.com/JuanFierro15</url>
+		</developer>
 	</developers>
 	<scm>
-		<connection/>
-		<developerConnection/>
-		<tag/>
-		<url/>
+		<connection>scm:git:https://github.com/JuanFierro15/icfes-prep-management-system.git</connection>
+		<developerConnection>scm:git:git@github.com:JuanFierro15/icfes-prep-management-system.git</developerConnection>
+		<tag>HEAD</tag>
+		<url>https://github.com/JuanFierro15/icfes-prep-management-system</url>
 	</scm>
 	<properties>
 		<java.version>21</java.version>
